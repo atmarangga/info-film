@@ -16,10 +16,12 @@ export default function genericReducer(state: any = defaultState, action: any) {
     }
 
     case SET_DATA: {
+      console.log("action ??", action);
       let newState = state.get("data").toJS();
       const newObject = {
         [action.key]: action.value,
       };
+      console.log("newObject ?", newObject);
       newState = { ...newState, ...newObject };
       return state.set("data", fromJS(newState));
     }

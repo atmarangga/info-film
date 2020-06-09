@@ -1,10 +1,11 @@
 import React, { PureComponent } from "react";
-import { Button, Card, Input, Label } from "semantic-ui-react";
+import { Button, Card} from "semantic-ui-react";
+import Input from '../../components/Input';
 
 interface Props {}
 interface state {}
 
-export default class LoginPage extends PureComponent<Props, state> {
+class LoginPage extends PureComponent<Props, state> {
   constructor(props: Object) {
     super(props);
     this.state = {
@@ -28,8 +29,8 @@ export default class LoginPage extends PureComponent<Props, state> {
         <Card>
           <Card.Header></Card.Header>
           <Card.Content>
-            <Input placeholder="username"></Input>
-            <Input placeholder="password"></Input>
+            <Input name='username' placeholder="username" />
+            <Input name='password' placeholder="password" />
             <div>
               <Button negative onClick={this.handleClear}>
                 Cancel
@@ -44,3 +45,7 @@ export default class LoginPage extends PureComponent<Props, state> {
     );
   }
 }
+
+export default LoginPage;   
+
+
