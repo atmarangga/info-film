@@ -1,0 +1,1 @@
+export const LOGIN_URL = 'http://wdassignment.devfl.com/api/login';

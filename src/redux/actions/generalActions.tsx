@@ -1,4 +1,11 @@
-import { LOGIN_ACTION, SET_DATA, CLEAR_SPECIFIC_DATA, CLEAR_DATA } from "../actionTypes";
+import { 
+  LOGIN_ACTION,
+  SET_DATA,
+  CLEAR_SPECIFIC_DATA,
+  CLEAR_DATA,
+  START_REQUEST,
+  END_REQUEST 
+} from "../actionTypes";
 
 export function loginActions(username?: string, password?: string) {
   return {
@@ -10,6 +17,19 @@ export function loginActions(username?: string, password?: string) {
   };
 }
 
+export function startRequest(request: string){
+  return {
+    type: START_REQUEST,
+    request
+  }
+}
+
+export function endRequest(request: string){
+  return {
+    type: END_REQUEST,
+    request
+  }
+}
 export function setData(key:string, value?: string | number){
     return {
         type: SET_DATA,

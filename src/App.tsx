@@ -1,5 +1,6 @@
 import React from "react";
-import LoginPage from "./pages/LoginPage";
+// import LoginPage from "./pages/LoginPage";
+import AppContainer from "./pages/AppContainer";
 import { createStore, applyMiddleware, compose } from "redux";
 import createSagaMiddleware from "redux-saga";
 import { Provider } from "react-redux";
@@ -24,7 +25,7 @@ sagaMiddleware.run(defaultSaga);
 function App() {
   return (
     <Provider store={store}>
-      <LoginPage />
+      <AppContainer />
     </Provider>
   );
 }
