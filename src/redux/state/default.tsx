@@ -9,6 +9,7 @@ const defaultState = {
   },
   token: null,
   requestProcess: [],
+  errorData:null,
 };
 
 export default fromJS(defaultState);

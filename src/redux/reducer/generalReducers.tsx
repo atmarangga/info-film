@@ -14,7 +14,6 @@ export default function genericReducer(state: any = defaultState, action: any) {
     case LOGIN_ACTION: {
       return state;
     }
-
     case START_REQUEST: {
       let currentRequest = state.get("requestProcess").toJS();
       console.log("start_request", action);
