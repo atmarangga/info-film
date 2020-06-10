@@ -8,7 +8,7 @@ import { Provider } from "react-redux";
 import genericReducer from "./redux/reducer/generalReducers";
 import defaultSaga from "./redux/saga/generallSaga";
 const sagaMiddleware = createSagaMiddleware();
-// const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+
 declare global {
   interface Window {
     __REDUX_DEVTOOLS_EXTENSION_COMPOSE__?: typeof compose;
