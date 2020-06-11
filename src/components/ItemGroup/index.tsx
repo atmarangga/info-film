@@ -34,6 +34,5 @@ export default class ItemGroup extends PureComponent<Props> {
 
   render() {
     return<>{this.prepareItems()}</>;
-    // return<> </>;
   }
 }

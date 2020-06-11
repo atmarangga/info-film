@@ -1,13 +1,14 @@
 import React, { PureComponent } from "react";
 import { List } from "immutable";
 import { connect } from "react-redux";
-import { Button, Item } from "semantic-ui-react";
+import { Button, Header } from "semantic-ui-react";
 import { makeSelectToken, makeSelectMovies } from "../../redux/selector";
 import {
   logoutActions,
   getMovieList,
 } from "../../redux/actions/generalActions";
 import ItemGroup from "../../components/ItemGroup";
+import DetailPage from "../DetailPage";
 
 interface Props {
   token?: string;
@@ -15,22 +16,44 @@ interface Props {
   getMovieList?: Function;
   movies?: List<any>;
 }
-class HomePage extends PureComponent<Props> {
+
+interface State {
+  showDetails: boolean;
+}
+
+class HomePage extends PureComponent<Props, State> {
   constructor(props?: any) {
     super(props);
+    this.state = {
+      showDetails: false
+    }
     this.handleLogout = this.handleLogout.bind(this);
+    this.getMovieDetails = this.getMovieDetails.bind(this)
     this.retrieveMovieList = this.retrieveMovieList.bind(this);
+    this.goBackToHomepage = this.goBackToHomepage.bind(this);
   }
 
   componentDidMount() {
     this.retrieveMovieList();
   }
-
+;
   retrieveMovieList() {
     const { getMovieList } = this.props;
     if (getMovieList) {
       getMovieList();
     }
+  }
+
+  getMovieDetails(id?: string | number){
+    this.setState({
+      showDetails: true
+    })
+  }
+
+  goBackToHomepage(){
+    this.setState({
+      showDetails: false
+    })
   }
 
   handleLogout() {
@@ -42,18 +65,29 @@ class HomePage extends PureComponent<Props> {
 
   render() {
     const { movies } = this.props;
+    const {showDetails} = this.state;
     const moviesArray = movies && movies.toJS();
     console.log("movies ??? ", moviesArray);
     return (
       <>
-        <p>This should be homepage</p>
-        <Button onClick={this.handleLogout}>Logout</Button>
-        <p>
-          {moviesArray && <ItemGroup
-            items={moviesArray}
-            onClick={(data: any) => console.log("data : ", data)}
-          />}
-        </p>
+        <Header style={styles.header}>
+          <Button onClick={this.handleLogout}>Logout</Button>
+        </Header>
+
+        <div style={styles.container}>
+          {moviesArray && !showDetails && (
+            <ItemGroup
+              items={moviesArray}
+              onClick={(data: any) => {
+                console.log("data : ", data)
+                this.getMovieDetails(data);
+              }}
+            />
+          )}
+          {
+            showDetails && (<DetailPage returnFunction={this.goBackToHomepage}/>)
+          }
+        </div>
       </>
     );
   }
@@ -73,3 +107,20 @@ function mapDispatchToProps(dispatch?: any) {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(HomePage);
+
+const styles = {
+  header: {
+    display: "flex",
+    height: 50,
+    backgroundColor: "#dc6700",
+    justifyContent: "flex-end",
+    alignContents: "center",
+    padding: 5,
+  },
+  container: {
+    display: "block",
+    margin: 5,
+    padding: 10,
+    backgroundColor: "#fff",
+  },
+};

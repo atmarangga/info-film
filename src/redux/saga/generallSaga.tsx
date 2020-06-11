@@ -9,15 +9,15 @@ import {
   REMOVE_TOKEN,
   GET_MOVIE_LIST,
   SET_DATA,
+  GET_MOVIE_DETAILS,
 } from "../actionTypes";
 import { LOGIN_REQUEST } from "../../helpers/request";
-import { LOGIN_URL, MOVIE_LIST_URL } from "../../helpers/url";
+import { LOGIN_URL, MOVIE_LIST_URL, MOVIE_DETAIL_URL } from "../../helpers/url";
 import {
   makeSelectUsername,
   makeSelectPassword,
   makeSelectToken,
 } from "../selector";
-
 
 export function* prepareLogin() {
   yield put({ type: START_REQUEST, request: LOGIN_REQUEST });
@@ -60,6 +60,26 @@ function* prepareLogout() {
   }
 }
 
+function* prepareMovieDetails(action?:any) {
+  try {
+    const token = yield select(makeSelectToken);
+    console.log('action ???', action);
+    const movieDetailResponse = yield call(fetch, MOVIE_DETAIL_URL, {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+        Authorization: "Bearer " + token,
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Credentials": "true",
+        "Access-Control-Allow-Origin": "*",
+      },
+      
+      
+    })
+  } catch (e) {
+    console.log("Exception on preparing movie details : ", e);
+  }
+}
 
 function* prepareMovieList() {
   try {
@@ -88,6 +108,7 @@ function* prepareMovieList() {
 
 export default function* defaultSaga() {
   return [
+    yield takeEvery(GET_MOVIE_DETAILS, prepareMovieDetails),
     yield takeEvery(GET_MOVIE_LIST, prepareMovieList),
     yield takeLatest(LOGOUT_ACTION, prepareLogout),
     yield takeLatest(LOGIN_ACTION, prepareLogin),
