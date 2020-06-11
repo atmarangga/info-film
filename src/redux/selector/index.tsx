@@ -1,17 +1,16 @@
 import { createSelector } from "reselect";
 import defaultState from "../state/default";
 
-const selectLoginData = (state?:any) =>
-  state.get("loginData", defaultState.loginSession);
+const selectLoginSession = (state?:any) =>
+  state.get("loginSession", defaultState.loginSession);
 
 const selectData = (state?:any) => state.get("data", defaultState.data);
 const makeSelectUsername = createSelector(selectData, (data) =>
   data.get("username")
 );
-const makeSelectPassword = createSelector(selectLoginData, (data) =>
+const makeSelectPassword = createSelector(selectData, (data) =>
   data.get("password")
 );
-
 const makeSelectData = createSelector(selectData, appData => appData);
-
-export { makeSelectPassword, makeSelectUsername, makeSelectData };
+const makeSelectToken = createSelector(selectLoginSession, loginSessions => loginSessions.get("token"))
+export { makeSelectPassword, makeSelectUsername, makeSelectData, makeSelectToken };

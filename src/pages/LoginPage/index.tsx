@@ -25,12 +25,14 @@ class LoginPage extends PureComponent<Props, state> {
     };
     this.handleLogin = this.handleLogin.bind(this);
     this.handleClear = this.handleClear.bind(this);
+    this.checkEmpty = this.checkEmpty.bind(this);
   }
 
   handleLogin() {
-    console.log("Just Clickin");
     const { requestLogin, username, password } = this.props;
-    if(requestLogin){
+    
+    
+    if( !this.checkEmpty() && requestLogin){
       requestLogin(username, password);
     }
   }
@@ -43,6 +45,20 @@ class LoginPage extends PureComponent<Props, state> {
     }
   }
 
+  checkEmpty(){
+    const {username, password} = this.props;
+    console.log('username ?', username);
+    if(!username){
+      alert('Username required')
+      return true;
+    }
+    if(!password){
+      alert('Password required');
+      return true;
+    }
+    return false;
+  }
+
   render() {
     return (
       <div>
@@ -52,9 +68,6 @@ class LoginPage extends PureComponent<Props, state> {
             <Input name="username" placeholder="username" />
             <Input isPassword name="password" placeholder="password" />
             <div>
-              {/* <Button negative onClick={this.handleClear}>
-                Clear
-              </Button> */}
               <Button
                 positive
                 onClick={this.handleLogin}
@@ -72,15 +85,15 @@ class LoginPage extends PureComponent<Props, state> {
 
 function mapStateToProps(state?: any) {
   return {
-    username: makeSelectUsername,
-    password: makeSelectPassword,
+    username: makeSelectUsername(state),
+    password: makeSelectPassword(state),
   };
 }
 
 function mapDispatchToProps(dispatch?: any) {
   return {
-    requestLogin: (username: string, password: string) =>
-      dispatch(loginActions(username, password)),
+    requestLogin: () =>
+      dispatch(loginActions()),
     clearData: () => dispatch(clearAllData()),
   };
 }

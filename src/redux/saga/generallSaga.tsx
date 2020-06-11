@@ -1,4 +1,4 @@
-import { takeLatest, put, call } from "redux-saga/effects";
+import { takeLatest, put, call, select } from "redux-saga/effects";
 import {
   LOGIN_ACTION,
   CLEAR_DATA,
@@ -8,6 +8,7 @@ import {
 } from "../actionTypes";
 import { LOGIN_REQUEST } from "../../helpers/request";
 import { LOGIN_URL } from "../../helpers/url";
+import { makeSelectUsername, makeSelectPassword } from "../selector";
 
 export function* clearDataLogin() {
   yield put({ type: CLEAR_DATA });
@@ -17,17 +18,21 @@ export function* prepareLogin() {
   yield put({ type: START_REQUEST, request: LOGIN_REQUEST });
 
   try {
+    const inputUsername = yield select(makeSelectUsername);
+    const inputPassword = yield select(makeSelectPassword);
+    console.log('inputUsername : ', inputUsername);
+    console.log('inputPassword : ', inputPassword);
     const loginResponse = yield call(fetch, LOGIN_URL, {
       method: "POST",
       headers: {
         Accept: "application/json",
-        "Authorization": "Basic " + btoa("test:test"),
+        "Authorization": "Basic " + btoa(inputUsername+":"+inputPassword),
         "Content-Type": "application/json",
         "Access-Control-Allow-Credentials": "true",
         "Access-Control-Allow-Origin": "*",
       }
     });
-    console.log("loginResponse ? ", loginResponse);
+    
     const dataHere = yield loginResponse.json();
     console.log('responseJson ? ', dataHere);
   } catch (e) {

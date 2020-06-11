@@ -9,13 +9,9 @@ import {
   REMOVE_ERROR
 } from "../actionTypes";
 
-export function loginActions(username?: string, password?: string) {
+export function loginActions() {
   return {
     type: LOGIN_ACTION,
-    credentials: {
-      username,
-      password,
-    },
   };
 }
 
