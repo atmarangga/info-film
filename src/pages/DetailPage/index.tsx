@@ -1,12 +1,12 @@
 import React, { PureComponent } from "react";
-import { Header, Button, Card } from "semantic-ui-react";
+import { Header, Button, Container } from "semantic-ui-react";
 import { connect } from "react-redux";
 import { makeSelectDetails } from "../../redux/selector";
 import { clearDataSpecific } from "../../redux/actions/generalActions";
 
 interface Props {
   returnFunction: Function;
-  deleteDetails: Function;  
+  deleteDetails: Function;
   movieDetails?: any;
 }
 
@@ -39,9 +39,9 @@ class DetailPage extends PureComponent<Props> {
       };
     }
     return {
-      id: "-",
-      title: "-",
-      description: "-",
+      // id: "-",
+      // title: "-",
+      // description: "-",
     };
   }
 
@@ -53,13 +53,13 @@ class DetailPage extends PureComponent<Props> {
           Back
         </Button>
         {title && id && description && (
-          <Card>
-            <Card.Header>{title}</Card.Header>
-            <Card.Content>
-              <Card.Description>{description}</Card.Description>
-              <Card.Meta>{id}</Card.Meta>
-            </Card.Content>
-          </Card>
+          <Container textAlign="justified">
+            <Header as="h2">
+              {title}
+              <Header.Subheader>{id}</Header.Subheader>
+            </Header>
+            <Container text-textAlign="justified">{description}</Container>
+          </Container>
         )}
       </>
     );
