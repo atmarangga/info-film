@@ -5,6 +5,7 @@ import {
   SET_DATA,
   START_REQUEST,
   END_REQUEST,
+  SET_TOKEN,
 } from "../actionTypes";
 
 import defaultState from "../state/default";
@@ -53,6 +54,16 @@ export default function genericReducer(state: any = defaultState, action: any) {
       newState = { ...newState, ...newObject };
       return state.set("data", fromJS(newState));
     }
+
+    case SET_TOKEN: {
+      let newState = state.get("loginSession").toJS();
+      newState = {
+        ...newState,
+        token: action.token,
+      }
+      return state.set("loginSession", fromJS(newState))
+    };
+
     default:
       return state;
   }

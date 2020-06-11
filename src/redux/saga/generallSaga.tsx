@@ -5,6 +5,8 @@ import {
   AUTHENTICATE,
   START_REQUEST,
   END_REQUEST,
+  SET_DATA,
+  SET_TOKEN,
 } from "../actionTypes";
 import { LOGIN_REQUEST } from "../../helpers/request";
 import { LOGIN_URL } from "../../helpers/url";
@@ -35,6 +37,13 @@ export function* prepareLogin() {
     
     const dataHere = yield loginResponse.json();
     console.log('responseJson ? ', dataHere);
+    if(dataHere.status === "ok"){
+      //retrieve token
+      const tokenData = dataHere.data && dataHere.data.token;
+      yield put({type: SET_TOKEN,token: tokenData})
+    }
+    yield put({type: END_REQUEST, request: LOGIN_REQUEST})
+    
   } catch (e) {
     console.log("Error : ", e);
   }

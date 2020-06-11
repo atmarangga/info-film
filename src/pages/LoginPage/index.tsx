@@ -3,13 +3,21 @@ import { Button, Card } from "semantic-ui-react";
 import { connect } from "react-redux";
 import Input from "../../components/Input";
 import { loginActions, clearAllData } from "../../redux/actions/generalActions";
-import { makeSelectUsername, makeSelectPassword } from "../../redux/selector";
+import {
+  makeSelectUsername,
+  makeSelectPassword,
+  makeSelectRequestProcess,
+} from "../../redux/selector";
+import { checkRequest } from "../../helpers/utils";
+import {LOGIN_REQUEST} from "../../helpers/request";
+
 
 interface Props {
   clearData?: Function;
   requestLogin?: Function;
   username?: string | any;
   password?: string | any;
+  requestPool?: Array<string> | any;
 }
 interface state {
   loadingButton: boolean;
@@ -26,16 +34,26 @@ class LoginPage extends PureComponent<Props, state> {
     this.handleLogin = this.handleLogin.bind(this);
     this.handleClear = this.handleClear.bind(this);
     this.checkEmpty = this.checkEmpty.bind(this);
+    this.checkLoading = this.checkLoading.bind(this);
   }
 
+  componentDidUpdate(prevProps?: any){
+    const oldRequestPool = prevProps.requestPool;
+    const newReqeustPool = this.props.requestPool;
+    if(JSON.stringify(oldRequestPool) !== JSON.stringify(newReqeustPool)){
+      this.checkLoading();
+    }
+  }
+  
   handleLogin() {
     const { requestLogin, username, password } = this.props;
-    
-    
-    if( !this.checkEmpty() && requestLogin){
+
+    if (!this.checkEmpty() && requestLogin) {
       requestLogin(username, password);
     }
   }
+
+
 
   handleClear() {
     console.log("Clear");
@@ -45,15 +63,20 @@ class LoginPage extends PureComponent<Props, state> {
     }
   }
 
-  checkEmpty(){
-    const {username, password} = this.props;
-    console.log('username ?', username);
-    if(!username){
-      alert('Username required')
+  checkLoading() {
+    const { requestPool } = this.props;
+    this.setState({loadingButton: checkRequest(requestPool, LOGIN_REQUEST)})
+  }
+
+  checkEmpty() {
+    const { username, password } = this.props;
+    console.log("username ?", username);
+    if (!username) {
+      alert("Username required");
       return true;
     }
-    if(!password){
-      alert('Password required');
+    if (!password) {
+      alert("Password required");
       return true;
     }
     return false;
@@ -87,13 +110,13 @@ function mapStateToProps(state?: any) {
   return {
     username: makeSelectUsername(state),
     password: makeSelectPassword(state),
+    requestPool: makeSelectRequestProcess(state),
   };
 }
 
 function mapDispatchToProps(dispatch?: any) {
   return {
-    requestLogin: () =>
-      dispatch(loginActions()),
+    requestLogin: () => dispatch(loginActions()),
     clearData: () => dispatch(clearAllData()),
   };
 }
