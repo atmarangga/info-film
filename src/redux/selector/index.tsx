@@ -12,17 +12,24 @@ const makeSelectPassword = createSelector(selectData, (data) =>
   data.get("password")
 );
 
-const makeSelectRequestProcess = createSelector(defaultState => defaultState, (data?: any) =>
-  data.get("requestProcess")
+const makeSelectRequestProcess = createSelector(
+  (defaultState) => defaultState,
+  (data?: any) => data.get("requestProcess")
 );
 const makeSelectData = createSelector(selectData, (appData) => appData);
 const makeSelectToken = createSelector(selectLoginSession, (loginSessions) =>
   loginSessions.get("token")
 );
+
+const makeSelectMovies = createSelector(selectData, (data) =>
+  data.get("movies")
+);
+
 export {
   makeSelectPassword,
   makeSelectUsername,
   makeSelectData,
+  makeSelectMovies,
   makeSelectToken,
   makeSelectRequestProcess,
 };

@@ -1,20 +1,17 @@
 import { fromJS } from "immutable";
 import {
-  LOGIN_ACTION,
   CLEAR_DATA,
   SET_DATA,
   START_REQUEST,
   END_REQUEST,
   SET_TOKEN,
+  REMOVE_TOKEN,
 } from "../actionTypes";
 
 import defaultState from "../state/default";
 
 export default function genericReducer(state: any = defaultState, action: any) {
   switch (action.type) {
-    case LOGIN_ACTION: {
-      return state;
-    }
     case START_REQUEST: {
       let currentRequest = state.get("requestProcess").toJS();
       console.log("start_request", action);
@@ -60,9 +57,18 @@ export default function genericReducer(state: any = defaultState, action: any) {
       newState = {
         ...newState,
         token: action.token,
-      }
-      return state.set("loginSession", fromJS(newState))
-    };
+      };
+      return state.set("loginSession", fromJS(newState));
+    }
+
+    case REMOVE_TOKEN: {
+      let newState = state.get("loginSession").toJS();
+      newState = {
+        ...newState,
+        token: null,
+      };
+      return state.set("loginSession", fromJS(newState));
+    }
 
     default:
       return state;
