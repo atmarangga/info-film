@@ -21,14 +21,11 @@ export function* prepareLogin() {
       method: "POST",
       headers: {
         Accept: "application/json",
+        "Authorization": "Basic " + btoa("test:test"),
         "Content-Type": "application/json",
         "Access-Control-Allow-Credentials": "true",
         "Access-Control-Allow-Origin": "*",
-      },
-      body: JSON.stringify({
-        username: "test",
-        password: "test",
-      }),
+      }
     });
     console.log("loginResponse ? ", loginResponse);
     const dataHere = yield loginResponse.json();
