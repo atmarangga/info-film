@@ -63,8 +63,10 @@ function* prepareLogout() {
 function* prepareMovieDetails(action?:any) {
   try {
     const token = yield select(makeSelectToken);
-    console.log('action ???', action);
-    const movieDetailResponse = yield call(fetch, MOVIE_DETAIL_URL, {
+    let newURL = `${MOVIE_DETAIL_URL}?id=${action.id}`
+    
+    
+    const movieDetailResponse = yield call(fetch, newURL, {
       method: "GET",
       headers: {
         Accept: "application/json",
@@ -72,10 +74,14 @@ function* prepareMovieDetails(action?:any) {
         "Content-Type": "application/json",
         "Access-Control-Allow-Credentials": "true",
         "Access-Control-Allow-Origin": "*",
-      },
-      
+      },  
       
     })
+    console.log('movieDetailResponse', movieDetailResponse);
+    const dataResponse = yield movieDetailResponse.json();
+    if(dataResponse && dataResponse.status === "ok"){
+      yield put({type: SET_DATA, key: "details", value: dataResponse.data})
+    }
   } catch (e) {
     console.log("Exception on preparing movie details : ", e);
   }
@@ -96,7 +102,6 @@ function* prepareMovieList() {
     });
     const dataResponse = yield movieResponse.json();
     if (dataResponse && dataResponse.status === "ok") {
-      console.log("dataResponse ?", dataResponse);
       if (dataResponse && dataResponse.data && dataResponse.data.length > 0) {
         yield put({ type: SET_DATA, key: "movies", value: dataResponse.data });
       }

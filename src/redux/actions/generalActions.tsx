@@ -78,7 +78,7 @@ export function getMovieList(){
   }
 }
 
-export function getMovieDetails(id?: string){
+export function getMovieDetails(id?: string | number){
   return {
     type: GET_MOVIE_DETAILS,
     id

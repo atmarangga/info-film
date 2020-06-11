@@ -6,6 +6,7 @@ import { makeSelectToken, makeSelectMovies } from "../../redux/selector";
 import {
   logoutActions,
   getMovieList,
+  getMovieDetails,
 } from "../../redux/actions/generalActions";
 import ItemGroup from "../../components/ItemGroup";
 import DetailPage from "../DetailPage";
@@ -14,6 +15,7 @@ interface Props {
   token?: string;
   logoutRequest?: Function;
   getMovieList?: Function;
+  getDetails?: Function;
   movies?: List<any>;
 }
 
@@ -25,10 +27,10 @@ class HomePage extends PureComponent<Props, State> {
   constructor(props?: any) {
     super(props);
     this.state = {
-      showDetails: false
-    }
+      showDetails: false,
+    };
     this.handleLogout = this.handleLogout.bind(this);
-    this.getMovieDetails = this.getMovieDetails.bind(this)
+    this.getMovieDetails = this.getMovieDetails.bind(this);
     this.retrieveMovieList = this.retrieveMovieList.bind(this);
     this.goBackToHomepage = this.goBackToHomepage.bind(this);
   }
@@ -36,7 +38,6 @@ class HomePage extends PureComponent<Props, State> {
   componentDidMount() {
     this.retrieveMovieList();
   }
-;
   retrieveMovieList() {
     const { getMovieList } = this.props;
     if (getMovieList) {
@@ -44,16 +45,22 @@ class HomePage extends PureComponent<Props, State> {
     }
   }
 
-  getMovieDetails(id?: string | number){
-    this.setState({
-      showDetails: true
-    })
+  getMovieDetails(id?: string | number) {
+    const { getDetails } = this.props;
+    if (getDetails) {
+      this.setState(
+        {
+          showDetails: true,
+        },
+        () => getDetails(id)
+      );
+    }
   }
 
-  goBackToHomepage(){
+  goBackToHomepage() {
     this.setState({
-      showDetails: false
-    })
+      showDetails: false,
+    });
   }
 
   handleLogout() {
@@ -65,7 +72,7 @@ class HomePage extends PureComponent<Props, State> {
 
   render() {
     const { movies } = this.props;
-    const {showDetails} = this.state;
+    const { showDetails } = this.state;
     const moviesArray = movies && movies.toJS();
     console.log("movies ??? ", moviesArray);
     return (
@@ -79,14 +86,12 @@ class HomePage extends PureComponent<Props, State> {
             <ItemGroup
               items={moviesArray}
               onClick={(data: any) => {
-                console.log("data : ", data)
+                console.log("data : ", data);
                 this.getMovieDetails(data);
               }}
             />
           )}
-          {
-            showDetails && (<DetailPage returnFunction={this.goBackToHomepage}/>)
-          }
+          {showDetails && <DetailPage returnFunction={this.goBackToHomepage} />}
         </div>
       </>
     );
@@ -103,6 +108,7 @@ function mapDispatchToProps(dispatch?: any) {
   return {
     logoutRequest: () => dispatch(logoutActions()),
     getMovieList: () => dispatch(getMovieList()),
+    getDetails: (id?: string | number) => dispatch(getMovieDetails(id)),
   };
 }
 
