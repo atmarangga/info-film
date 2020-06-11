@@ -1,19 +1,18 @@
 import { fromJS } from "immutable";
 import {
-  LOGIN_ACTION,
   CLEAR_DATA,
   SET_DATA,
   START_REQUEST,
   END_REQUEST,
+  SET_TOKEN,
+  REMOVE_TOKEN,
+  CLEAR_SPECIFIC_DATA,
 } from "../actionTypes";
 
 import defaultState from "../state/default";
 
 export default function genericReducer(state: any = defaultState, action: any) {
   switch (action.type) {
-    case LOGIN_ACTION: {
-      return state;
-    }
     case START_REQUEST: {
       let currentRequest = state.get("requestProcess").toJS();
       console.log("start_request", action);
@@ -32,6 +31,7 @@ export default function genericReducer(state: any = defaultState, action: any) {
         currentRequest.length > 0 &&
         currentRequest.indexOf(action.request > -1)
       ) {
+        
         const [request, ...otherDetails] = currentRequest;
         return state.set("requestProcess", fromJS(otherDetails));
       }
@@ -41,6 +41,13 @@ export default function genericReducer(state: any = defaultState, action: any) {
     case CLEAR_DATA: {
       // console.log("I am going to clear the data");
       return defaultState;
+    }
+    case CLEAR_SPECIFIC_DATA:{
+      let newData = state.get("data");
+      console.log('deleting', action.key);
+      newData = newData.delete(action.key);
+      console.log("newData ::", newData);
+      return state.set("data", newData);
     }
 
     case SET_DATA: {
@@ -53,6 +60,25 @@ export default function genericReducer(state: any = defaultState, action: any) {
       newState = { ...newState, ...newObject };
       return state.set("data", fromJS(newState));
     }
+
+    case SET_TOKEN: {
+      let newState = state.get("loginSession").toJS();
+      newState = {
+        ...newState,
+        token: action.token,
+      };
+      return state.set("loginSession", fromJS(newState));
+    }
+
+    case REMOVE_TOKEN: {
+      let newState = state.get("loginSession").toJS();
+      newState = {
+        ...newState,
+        token: null,
+      };
+      return state.set("loginSession", fromJS(newState));
+    }
+
     default:
       return state;
   }

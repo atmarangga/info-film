@@ -1,15 +1,12 @@
-import { fromJS } from 'immutable';
+import { fromJS } from "immutable";
 
 const defaultState = {
-  data: {
+  data: {},
+  loginSession: {
+    token: null
   },
-  loginData: {
-    username: null,
-    password: null,
-  },
-  token: null,
-  requestProcess: [],
-  errorData:null,
+  errorData: null,
+  requestProcess:[],
 };
 
 export default fromJS(defaultState);
