@@ -25,6 +25,8 @@ const makeSelectMovies = createSelector(selectData, (data) =>
   data.get("movies")
 );
 
+const makeSelectError = createSelector((defaultState) => defaultState, (data?:any) => data.get("errorData"));
+
 export {
   makeSelectPassword,
   makeSelectUsername,
@@ -33,4 +35,5 @@ export {
   makeSelectDetails,
   makeSelectToken,
   makeSelectRequestProcess,
+  makeSelectError
 };

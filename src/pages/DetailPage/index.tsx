@@ -1,13 +1,19 @@
 import React, { PureComponent } from "react";
-import { Header, Button, Container } from "semantic-ui-react";
+import { Header, Button, Container, Icon } from "semantic-ui-react";
 import { connect } from "react-redux";
-import { makeSelectDetails } from "../../redux/selector";
-import { clearDataSpecific } from "../../redux/actions/generalActions";
+import { makeSelectDetails, makeSelectError } from "../../redux/selector";
+import {
+  clearDataSpecific,
+  removeError,
+} from "../../redux/actions/generalActions";
+import ErrorComponent from "../../components/Oops";
 
 interface Props {
   returnFunction: Function;
   deleteDetails: Function;
   movieDetails?: any;
+  removeError?: Function;
+  isError?: any;
 }
 
 class DetailPage extends PureComponent<Props> {
@@ -18,10 +24,11 @@ class DetailPage extends PureComponent<Props> {
   }
 
   handleBackButton(e?: any) {
-    const { returnFunction, deleteDetails } = this.props;
-    if (returnFunction) {
+    const { returnFunction, deleteDetails, removeError } = this.props;
+    if (returnFunction && removeError) {
       deleteDetails();
       returnFunction();
+      removeError();
     }
   }
 
@@ -47,18 +54,26 @@ class DetailPage extends PureComponent<Props> {
 
   render() {
     const { id, title, description } = this.prepareDetails();
+    const {isError} = this.props;
     return (
       <>
-        <Button primary onClick={this.handleBackButton}>
+        <Button
+          icon
+          labelPosition="left"
+          primary
+          onClick={this.handleBackButton}
+        >
+          <Icon name="angle double left" />
           Back
         </Button>
+        {isError && <ErrorComponent />}
         {title && id && description && (
           <Container textAlign="justified">
             <Header as="h2">
               {title}
               <Header.Subheader>{id}</Header.Subheader>
             </Header>
-            <Container text-textAlign="justified">{description}</Container>
+            <Container textAlign="justified">{description}</Container>
           </Container>
         )}
       </>
@@ -69,12 +84,14 @@ class DetailPage extends PureComponent<Props> {
 function mapStateToProps(state?: any) {
   return {
     movieDetails: makeSelectDetails(state),
+    isError: makeSelectError(state)
   };
 }
 
 function mapDispatchToProps(dispatch?: any) {
   return {
     deleteDetails: () => dispatch(clearDataSpecific("details")),
+    removeError: () => dispatch(removeError()),
   };
 }
 

@@ -77,9 +77,16 @@ class HomePage extends PureComponent<Props, State> {
     return (
       <>
         <Header style={styles.header}>
+          <div style={styles.title}>{`Info Film`}</div>
+
           <Button onClick={this.handleLogout}>Logout</Button>
         </Header>
-
+        <div style={styles.top}>
+          {`Your Movies`}
+          <div style={styles.subTitle}>
+            Chill in and browse you movies list{" "}
+          </div>
+        </div>
         <div style={styles.container}>
           {moviesArray && !showDetails && (
             <ItemGroup
@@ -114,6 +121,27 @@ function mapDispatchToProps(dispatch?: any) {
 export default connect(mapStateToProps, mapDispatchToProps)(HomePage);
 
 const styles = {
+  top: {
+    height: 110,
+    color: "#0a0a0a",
+    fontSize: 50,
+    padding: 10,
+    marginTop: 20,
+    marginBottom: 20,
+  },
+  subTitle: {
+    color: "#aaaaaa",
+    marginTop: 20,
+    fontSize: 25,
+    padding: 10,
+  },
+  title: {
+    display: "grid",
+    alignItems: "center",
+    color: "#fff",
+    height: "100%",
+    marginRight: 50,
+  },
   header: {
     display: "flex",
     height: 50,

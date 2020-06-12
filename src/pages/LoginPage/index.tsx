@@ -1,12 +1,17 @@
 import React, { PureComponent } from "react";
-import { Item, Button, Card } from "semantic-ui-react";
+import { Item, Button, Card, Modal } from "semantic-ui-react";
 import { connect } from "react-redux";
 import Input from "../../components/Input";
-import { loginActions, clearAllData } from "../../redux/actions/generalActions";
+import {
+  loginActions,
+  clearAllData,
+  removeError,
+} from "../../redux/actions/generalActions";
 import {
   makeSelectUsername,
   makeSelectPassword,
   makeSelectRequestProcess,
+  makeSelectError,
 } from "../../redux/selector";
 import { checkRequest } from "../../helpers/utils";
 import { LOGIN_REQUEST } from "../../helpers/request";
@@ -16,7 +21,9 @@ interface Props {
   requestLogin?: Function;
   username?: string | any;
   password?: string | any;
+  errorLogin?: any;
   requestPool?: Array<string> | any;
+  removeError?: Function;
 }
 interface state {
   loadingButton: boolean;
@@ -36,6 +43,7 @@ class LoginPage extends PureComponent<Props, state> {
     this.checkEmpty = this.checkEmpty.bind(this);
     this.checkLoading = this.checkLoading.bind(this);
     this.setFirstInput = this.setFirstInput.bind(this);
+    this.handleModalClose = this.handleModalClose.bind(this);
   }
 
   componentDidUpdate(prevProps?: any) {
@@ -44,23 +52,38 @@ class LoginPage extends PureComponent<Props, state> {
     if (JSON.stringify(oldRequestPool) !== JSON.stringify(newReqeustPool)) {
       this.checkLoading();
     }
-    const {username, password} = this.props;
+    const { username, password } = this.props;
     const oldUsername = prevProps.username;
     const oldPassword = prevProps.password;
-   if((oldUsername === null || oldUsername === undefined) && username !== null && username !== undefined ){
-    this.setFirstInput("username");
-   } 
-   if((oldPassword === null || oldPassword === undefined) && password !== null && password !== undefined ){
-    this.setFirstInput("password");
-   } 
+    if (
+      (oldUsername === null || oldUsername === undefined) &&
+      username !== null &&
+      username !== undefined
+    ) {
+      this.setFirstInput("username");
+    }
+    if (
+      (oldPassword === null || oldPassword === undefined) &&
+      password !== null &&
+      password !== undefined
+    ) {
+      this.setFirstInput("password");
+    }
+  }
+
+  handleModalClose() {
+    const { removeError } = this.props;
+    if (removeError) {
+      removeError();
+    }
   }
 
   handleLogin() {
     const { requestLogin, username, password } = this.props;
-    if(!username){
+    if (!username) {
       this.setFirstInput("username");
     }
-    if(!password){
+    if (!password) {
       this.setFirstInput("password");
     }
     if (requestLogin && username && password) {
@@ -102,6 +125,7 @@ class LoginPage extends PureComponent<Props, state> {
   }
 
   render() {
+    const { errorLogin } = this.props;
     return (
       <>
         <div style={styles.header}></div>
@@ -115,7 +139,9 @@ class LoginPage extends PureComponent<Props, state> {
                 <Input
                   name="username"
                   placeholder="username"
-                  isError={this.checkEmpty().username && !this.state.inputUsername}
+                  isError={
+                    this.checkEmpty().username && !this.state.inputUsername
+                  }
                 />
               </Item>
               <Item style={styles.input}>
@@ -123,7 +149,9 @@ class LoginPage extends PureComponent<Props, state> {
                   isPassword
                   name="password"
                   placeholder="password"
-                  isError={this.checkEmpty().password && !this.state.inputPassword}
+                  isError={
+                    this.checkEmpty().password && !this.state.inputPassword
+                  }
                 />
               </Item>
               <Item>
@@ -142,6 +170,15 @@ class LoginPage extends PureComponent<Props, state> {
             </Card.Content>
           </Card>
         </div>
+        {errorLogin && (
+          <Modal size="mini" open={true}>
+            <Modal.Header>{errorLogin && errorLogin.title}</Modal.Header>
+            <Modal.Content>{errorLogin && errorLogin.message}</Modal.Content>
+            <Modal.Actions>
+              <Button negative onClick={this.handleModalClose}>Ok</Button>
+            </Modal.Actions>
+          </Modal>
+        )}
       </>
     );
   }
@@ -152,6 +189,7 @@ function mapStateToProps(state?: any) {
     username: makeSelectUsername(state),
     password: makeSelectPassword(state),
     requestPool: makeSelectRequestProcess(state),
+    errorLogin: makeSelectError(state),
   };
 }
 
@@ -159,6 +197,7 @@ function mapDispatchToProps(dispatch?: any) {
   return {
     requestLogin: () => dispatch(loginActions()),
     clearData: () => dispatch(clearAllData()),
+    removeError: () => dispatch(removeError()),
   };
 }
 export default connect(mapStateToProps, mapDispatchToProps)(LoginPage);
@@ -188,11 +227,11 @@ const styles = {
     width: "100%",
     marginBottom: 5,
   },
-  titleContainer:{
+  titleContainer: {
     display: "flex",
     width: "100%",
     justifyContent: "center",
-    alignContents: "center"
+    alignContents: "center",
   },
   title: {
     fontSize: 50,
@@ -200,6 +239,5 @@ const styles = {
     color: "#000",
     padding: 10,
     marginBottom: 10,
-    
   },
 };

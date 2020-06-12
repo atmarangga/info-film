@@ -7,6 +7,8 @@ import {
   SET_TOKEN,
   REMOVE_TOKEN,
   CLEAR_SPECIFIC_DATA,
+  SET_ERROR,
+  REMOVE_ERROR,
 } from "../actionTypes";
 
 import defaultState from "../state/default";
@@ -79,6 +81,22 @@ export default function genericReducer(state: any = defaultState, action: any) {
         token: null,
       };
       return state.set("loginSession", fromJS(newState));
+    }
+
+    case SET_ERROR:{
+      let newState = state.get("errorData");
+      if(newState){
+        newState = newState.toJS();
+      }
+      newState = {
+        title: action.title,
+        message: action.message,
+      }
+      return state.set("errorData", newState);
+    }
+
+    case REMOVE_ERROR: {
+      return state.set("errorData", null)
     }
 
     default:
