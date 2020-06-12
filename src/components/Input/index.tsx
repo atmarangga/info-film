@@ -58,7 +58,7 @@ class CustomInput extends PureComponent<Props> {
           onChange={this.handleChange}
           error={!isFirst && isError}
         ></Input>
-        <div>{!isFirst && isError && `This field is mandatory`}</div>
+        <div style={styles.errorText}>{!isFirst && isError && `This field is mandatory`}</div>
       </div>
     );
   }
@@ -83,4 +83,7 @@ const styles = {
   container: {
     display: "grid",
   },
+  errorText: {
+    color: "#9f3a38"
+  }
 };
