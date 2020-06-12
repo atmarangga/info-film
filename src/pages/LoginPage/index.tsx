@@ -44,12 +44,26 @@ class LoginPage extends PureComponent<Props, state> {
     if (JSON.stringify(oldRequestPool) !== JSON.stringify(newReqeustPool)) {
       this.checkLoading();
     }
+    const {username, password} = this.props;
+    const oldUsername = prevProps.username;
+    const oldPassword = prevProps.password;
+   if((oldUsername === null || oldUsername === undefined) && username !== null && username !== undefined ){
+    this.setFirstInput("username");
+   } 
+   if((oldPassword === null || oldPassword === undefined) && password !== null && password !== undefined ){
+    this.setFirstInput("password");
+   } 
   }
 
   handleLogin() {
     const { requestLogin, username, password } = this.props;
-
-    if (requestLogin) {
+    if(!username){
+      this.setFirstInput("username");
+    }
+    if(!password){
+      this.setFirstInput("password");
+    }
+    if (requestLogin && username && password) {
       requestLogin(username, password);
     }
   }
@@ -99,22 +113,17 @@ class LoginPage extends PureComponent<Props, state> {
             <Card.Content>
               <Item style={styles.input}>
                 <Input
-                  notFirstInput={() => this.setFirstInput("username")}
-                  isFirst={this.state.inputUsername}
-                  // isFirst={false}
                   name="username"
                   placeholder="username"
-                  isError={this.checkEmpty().username}
+                  isError={this.checkEmpty().username && !this.state.inputUsername}
                 />
               </Item>
               <Item style={styles.input}>
                 <Input
-                  notFirstInput={() => this.setFirstInput("password")}
-                  isFirst={this.state.inputPassword}
                   isPassword
                   name="password"
                   placeholder="password"
-                  isError={this.checkEmpty().password}
+                  isError={this.checkEmpty().password && !this.state.inputPassword}
                 />
               </Item>
               <Item>
