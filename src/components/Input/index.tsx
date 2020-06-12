@@ -10,6 +10,9 @@ interface Props {
   isPassword?: boolean;
   placeholder?: string;
   dataValue?: any;
+  isFirst?: boolean;
+  isError?: boolean;
+  notFirstInput?: Function;
 }
 
 class CustomInput extends PureComponent<Props> {
@@ -19,32 +22,43 @@ class CustomInput extends PureComponent<Props> {
     this.getData = this.getData.bind(this);
   }
 
+  componentDidUpdate(prevProps?: any) {
+    const { name, notFirstInput } = this.props;
+    const first = this.props.isFirst;
+    const newData = this.props.dataValue[name];
+    const oldData = name && this.props.dataValue && this.props.dataValue[name];
+    if (first && notFirstInput && oldData && newData && oldData.length > 0 && JSON.stringify(newData) !== JSON.stringify(oldData)) {
+      notFirstInput();
+    }
+  }
+
   getData() {
     const { name, dataValue } = this.props;
     if (dataValue && name) {
-      console.log("data here ?", dataValue[name]);
       return dataValue[name];
     }
     return "";
   }
   handleChange(e?: any, data?: any) {
     const { setInputData, name } = this.props;
+
     if (setInputData) {
       setInputData(name, data.value);
     }
   }
 
   render() {
-    const { placeholder, isPassword } = this.props;
+    const { placeholder, isPassword, isError, isFirst } = this.props;
     return (
       <div style={styles.container}>
-      <Input
-        value={this.getData()}
-        type={isPassword ? "password" : "text"}
-        placeholder={placeholder}
-        onChange={this.handleChange}
-      ></Input>
-      {placeholder}
+        <Input
+          value={this.getData()}
+          type={isPassword ? "password" : "text"}
+          placeholder={placeholder}
+          onChange={this.handleChange}
+          error={!isFirst && isError}
+        ></Input>
+        <div>{!isFirst && isError && `This field is mandatory`}</div>
       </div>
     );
   }
@@ -65,10 +79,8 @@ function mapDispatchToProps(dispatch?: any) {
 
 export default connect(mapStateToProps, mapDispatchToProps)(CustomInput);
 
-const styles={
+const styles = {
   container: {
-    display: "block",
-    backgroundColor: '#f00'
-
-  }
-}
+    display: "grid",
+  },
+};

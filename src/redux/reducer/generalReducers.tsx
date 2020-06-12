@@ -28,13 +28,14 @@ export default function genericReducer(state: any = defaultState, action: any) {
     case END_REQUEST: {
       let currentRequest = state.get("requestProcess").toJS();
       if (
+        currentRequest &&
         currentRequest.length > 0 &&
         currentRequest.indexOf(action.request) > -1
       ) {
         
-        // const [request, ...otherDetails] = currentRequest;
-        // return state.set("requestProcess", fromJS(otherDetails));
-        return remove(state.get("requestProcess"),currentRequest.indexOf(action.request))
+        const [request, ...otherDetails] = currentRequest;
+        return state.set("requestProcess", fromJS(otherDetails));
+        // return remove(state.get("requestProcess"),currentRequest.indexOf(action.request))
       }
       return state;
     }
