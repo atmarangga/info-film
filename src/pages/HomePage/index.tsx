@@ -74,7 +74,6 @@ class HomePage extends PureComponent<Props, State> {
     const { movies } = this.props;
     const { showDetails } = this.state;
     const moviesArray = movies && movies.toJS();
-    console.log("movies ??? ", moviesArray);
     return (
       <>
         <Header style={styles.header}>

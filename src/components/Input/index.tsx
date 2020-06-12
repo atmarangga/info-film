@@ -37,12 +37,15 @@ class CustomInput extends PureComponent<Props> {
   render() {
     const { placeholder, isPassword } = this.props;
     return (
+      <div style={styles.container}>
       <Input
         value={this.getData()}
         type={isPassword ? "password" : "text"}
         placeholder={placeholder}
         onChange={this.handleChange}
       ></Input>
+      {placeholder}
+      </div>
     );
   }
 }
@@ -61,3 +64,11 @@ function mapDispatchToProps(dispatch?: any) {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(CustomInput);
+
+const styles={
+  container: {
+    display: "block",
+    backgroundColor: '#f00'
+
+  }
+}

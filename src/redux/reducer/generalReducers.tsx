@@ -1,4 +1,4 @@
-import { fromJS } from "immutable";
+import { fromJS, remove } from "immutable";
 import {
   CLEAR_DATA,
   SET_DATA,
@@ -29,11 +29,12 @@ export default function genericReducer(state: any = defaultState, action: any) {
       let currentRequest = state.get("requestProcess").toJS();
       if (
         currentRequest.length > 0 &&
-        currentRequest.indexOf(action.request > -1)
+        currentRequest.indexOf(action.request) > -1
       ) {
         
-        const [request, ...otherDetails] = currentRequest;
-        return state.set("requestProcess", fromJS(otherDetails));
+        // const [request, ...otherDetails] = currentRequest;
+        // return state.set("requestProcess", fromJS(otherDetails));
+        return remove(state.get("requestProcess"),currentRequest.indexOf(action.request))
       }
       return state;
     }
