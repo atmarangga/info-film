@@ -92,6 +92,7 @@ function* prepareMovieDetails(action?: any) {
     });
     console.log("movieDetailResponse", movieDetailResponse);
     const dataResponse = yield movieDetailResponse.json();
+    yield put({type: END_REQUEST, request: MOVIE_DETAIL_REQUEST})
     if (dataResponse && dataResponse.status === "ok") {
       yield put({ type: SET_DATA, key: "details", value: dataResponse.data });
       
@@ -99,7 +100,7 @@ function* prepareMovieDetails(action?: any) {
     else {
       yield put({type: SET_ERROR, message: movieDetailResponse.statusText, title: movieDetailResponse.status})
     }
-    yield put({type: END_REQUEST, REQUEST: MOVIE_DETAIL_REQUEST})
+    
 
   } catch (e) {
     console.log("Exception on preparing movie details : ", e);

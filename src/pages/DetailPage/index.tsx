@@ -1,12 +1,19 @@
 import React, { PureComponent } from "react";
 import { Header, Button, Container, Icon } from "semantic-ui-react";
 import { connect } from "react-redux";
-import { makeSelectDetails, makeSelectError } from "../../redux/selector";
+import { MOVIE_DETAIL_REQUEST } from "../../helpers/request";
+import {
+  makeSelectDetails,
+  makeSelectError,
+  makeSelectRequestProcess,
+} from "../../redux/selector";
 import {
   clearDataSpecific,
   removeError,
 } from "../../redux/actions/generalActions";
 import ErrorComponent from "../../components/Oops";
+import LoaderComponent from "../../components/Loading";
+import { checkRequest } from "../../helpers/utils";
 
 interface Props {
   returnFunction: Function;
@@ -14,6 +21,7 @@ interface Props {
   movieDetails?: any;
   removeError?: Function;
   isError?: any;
+  processPool?: Array<string> | any;
 }
 
 class DetailPage extends PureComponent<Props> {
@@ -54,7 +62,7 @@ class DetailPage extends PureComponent<Props> {
 
   render() {
     const { id, title, description } = this.prepareDetails();
-    const {isError} = this.props;
+    const { isError, processPool } = this.props;
     return (
       <>
         <Button
@@ -66,6 +74,7 @@ class DetailPage extends PureComponent<Props> {
           <Icon name="angle double left" />
           Back
         </Button>
+        {checkRequest(processPool, MOVIE_DETAIL_REQUEST) && <LoaderComponent />}
         {isError && <ErrorComponent />}
         {title && id && description && (
           <Container textAlign="justified">
@@ -84,7 +93,8 @@ class DetailPage extends PureComponent<Props> {
 function mapStateToProps(state?: any) {
   return {
     movieDetails: makeSelectDetails(state),
-    isError: makeSelectError(state)
+    processPool: makeSelectRequestProcess(state),
+    isError: makeSelectError(state),
   };
 }
 
