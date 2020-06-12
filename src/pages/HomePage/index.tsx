@@ -2,7 +2,7 @@ import React, { PureComponent } from "react";
 import { List } from "immutable";
 import { connect } from "react-redux";
 import { Button, Header } from "semantic-ui-react";
-import { makeSelectToken, makeSelectMovies } from "../../redux/selector";
+import { makeSelectToken, makeSelectMovies, makeSelectRequestProcess } from "../../redux/selector";
 import {
   logoutActions,
   getMovieList,
@@ -10,6 +10,9 @@ import {
 } from "../../redux/actions/generalActions";
 import ItemGroup from "../../components/ItemGroup";
 import DetailPage from "../DetailPage";
+import LoadingItems from "../../components/LoadingItems";
+import {checkRequest} from "../../helpers/utils"
+import { MOVIE_LIST_REQUEST } from "../../helpers/request";
 
 interface Props {
   token?: string;
@@ -17,6 +20,7 @@ interface Props {
   getMovieList?: Function;
   getDetails?: Function;
   movies?: List<any>;
+  requestPool?: List<any>;
 }
 
 interface State {
@@ -38,6 +42,7 @@ class HomePage extends PureComponent<Props, State> {
   componentDidMount() {
     this.retrieveMovieList();
   }
+
   retrieveMovieList() {
     const { getMovieList } = this.props;
     if (getMovieList) {
@@ -71,7 +76,7 @@ class HomePage extends PureComponent<Props, State> {
   }
 
   render() {
-    const { movies } = this.props;
+    const { movies, requestPool } = this.props;
     const { showDetails } = this.state;
     const moviesArray = movies && movies.toJS();
     return (
@@ -88,11 +93,12 @@ class HomePage extends PureComponent<Props, State> {
           </div>
         </div>
         <div style={styles.container}>
+          
+          {requestPool && checkRequest(requestPool.toJS(), MOVIE_LIST_REQUEST) && (<LoadingItems />)}
           {moviesArray && !showDetails && (
             <ItemGroup
               items={moviesArray}
               onClick={(data: any) => {
-                console.log("data : ", data);
                 this.getMovieDetails(data);
               }}
             />
@@ -108,6 +114,7 @@ function mapStateToProps(state?: any) {
   return {
     token: makeSelectToken(state),
     movies: makeSelectMovies(state),
+    requestPool: makeSelectRequestProcess(state)
   };
 }
 function mapDispatchToProps(dispatch?: any) {

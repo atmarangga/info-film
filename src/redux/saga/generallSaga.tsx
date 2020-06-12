@@ -12,7 +12,7 @@ import {
   GET_MOVIE_DETAILS,
   SET_ERROR,
 } from "../actionTypes";
-import { LOGIN_REQUEST, MOVIE_DETAIL_REQUEST } from "../../helpers/request";
+import { LOGIN_REQUEST, MOVIE_DETAIL_REQUEST, MOVIE_LIST_REQUEST } from "../../helpers/request";
 import { LOGIN_URL, MOVIE_LIST_URL, MOVIE_DETAIL_URL } from "../../helpers/url";
 import {
   makeSelectUsername,
@@ -26,8 +26,6 @@ export function* prepareLogin() {
   try {
     const inputUsername = yield select(makeSelectUsername);
     const inputPassword = yield select(makeSelectPassword);
-    console.log("inputUsername : ", inputUsername);
-    console.log("inputPassword : ", inputPassword);
     const loginResponse = yield call(fetch, LOGIN_URL, {
       method: "POST",
       headers: {
@@ -40,13 +38,12 @@ export function* prepareLogin() {
     });
 
     const dataHere = yield loginResponse.json();
-    console.log("responseJson ? ", dataHere);
     if (dataHere.status === "ok") {
       //retrieve token
       const tokenData = dataHere.data && dataHere.data.token;
       yield put({ type: SET_TOKEN, token: tokenData });
     } else if (dataHere.status === "error") {
-      console.log("error", loginResponse);
+      
       yield put({
         type: SET_ERROR,
         message: dataHere.message,
@@ -90,7 +87,6 @@ function* prepareMovieDetails(action?: any) {
         "Access-Control-Allow-Origin": "*",
       },
     });
-    console.log("movieDetailResponse", movieDetailResponse);
     const dataResponse = yield movieDetailResponse.json();
     yield put({type: END_REQUEST, request: MOVIE_DETAIL_REQUEST})
     if (dataResponse && dataResponse.status === "ok") {
@@ -112,6 +108,7 @@ function* prepareMovieDetails(action?: any) {
 function* prepareMovieList() {
   try {
     const token = yield select(makeSelectToken);
+    yield put({type: START_REQUEST, request: MOVIE_LIST_REQUEST})
     const movieResponse = yield call(fetch, MOVIE_LIST_URL, {
       method: "GET",
       headers: {
@@ -128,10 +125,11 @@ function* prepareMovieList() {
         yield put({ type: SET_DATA, key: "movies", value: dataResponse.data });
       }
     }
-
+    yield put({type: END_REQUEST, request: MOVIE_LIST_REQUEST})
 
   } catch (e) {
     console.log("failed to prepareMovie list");
+    yield put({type: END_REQUEST, request: MOVIE_LIST_REQUEST})
     
   }
 }
