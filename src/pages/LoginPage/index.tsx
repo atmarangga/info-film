@@ -30,7 +30,7 @@ class LoginPage extends PureComponent<Props, state> {
     this.state = {
       loadingButton: false,
       inputPassword: true,
-      inputUsername: true
+      inputUsername: true,
     };
     this.handleLogin = this.handleLogin.bind(this);
     this.checkEmpty = this.checkEmpty.bind(this);
@@ -54,16 +54,16 @@ class LoginPage extends PureComponent<Props, state> {
     }
   }
 
-  setFirstInput(name?: string){
-    if(name==="password" && this.state.inputPassword){
+  setFirstInput(name?: string) {
+    if (name === "password" && this.state.inputPassword) {
       this.setState({
-        inputPassword: false
-      })
+        inputPassword: false,
+      });
     }
-    if(name==="username" && this.state.inputUsername){
+    if (name === "username" && this.state.inputUsername) {
       this.setState({
-        inputUsername: false
-      })
+        inputUsername: false,
+      });
     }
   }
 
@@ -88,50 +88,51 @@ class LoginPage extends PureComponent<Props, state> {
   }
 
   render() {
-    return (  
+    return (
       <>
-      <div style={styles.header}>
-        Info - Film
-      </div>
-      <div style={styles.page}>
-        <Card style={styles.card}>
-          <Card.Content>
-            <Item style={styles.input}>
-              <Input
-                notFirstInput={() => this.setFirstInput("username")}
-                isFirst={this.state.inputUsername}
-                // isFirst={false}
-                name="username"
-                placeholder="username"
-                isError={this.checkEmpty().username}
-              />
-            </Item>
-            <Item style={styles.input}>
-              <Input
-              notFirstInput={() => this.setFirstInput("password")}
-                isFirst = {this.state.inputPassword}
-                isPassword
-                name="password"
-                placeholder="password"
-                isError={this.checkEmpty().password}
-              />
-            </Item>
-            <Item>
-              <div>
-                <Button
-                  style={styles.buttons}
-                  primary
-                  onClick={this.handleLogin}
-                  loading={this.state.loadingButton}
-                  disabled={this.state.loadingButton}
-                >
-                  Login
-                </Button>
-              </div>
-            </Item>
-          </Card.Content>
-        </Card>
-      </div>
+        <div style={styles.header}></div>
+        <div style={styles.titleContainer}>
+          <div style={styles.title}>Info Film</div>
+        </div>
+        <div style={styles.page}>
+          <Card style={styles.card}>
+            <Card.Content>
+              <Item style={styles.input}>
+                <Input
+                  notFirstInput={() => this.setFirstInput("username")}
+                  isFirst={this.state.inputUsername}
+                  // isFirst={false}
+                  name="username"
+                  placeholder="username"
+                  isError={this.checkEmpty().username}
+                />
+              </Item>
+              <Item style={styles.input}>
+                <Input
+                  notFirstInput={() => this.setFirstInput("password")}
+                  isFirst={this.state.inputPassword}
+                  isPassword
+                  name="password"
+                  placeholder="password"
+                  isError={this.checkEmpty().password}
+                />
+              </Item>
+              <Item>
+                <div>
+                  <Button
+                    style={styles.buttons}
+                    primary
+                    onClick={this.handleLogin}
+                    loading={this.state.loadingButton}
+                    disabled={this.state.loadingButton}
+                  >
+                    Login
+                  </Button>
+                </div>
+              </Item>
+            </Card.Content>
+          </Card>
+        </div>
       </>
     );
   }
@@ -154,13 +155,10 @@ function mapDispatchToProps(dispatch?: any) {
 export default connect(mapStateToProps, mapDispatchToProps)(LoginPage);
 
 const styles = {
-  header:{
+  header: {
     height: 200,
-    color: "#fff",
-    fontSize: 60,
-    padding: 30,
-    justifyContent: 'center',
-    backgroundColor: "#dc6700",
+
+    justifyContent: "center",
   },
   page: {
     padding: 20,
@@ -180,5 +178,19 @@ const styles = {
   input: {
     width: "100%",
     marginBottom: 5,
+  },
+  titleContainer:{
+    display: "flex",
+    width: "100%",
+    justifyContent: "center",
+    alignContents: "center"
+  },
+  title: {
+    fontSize: 50,
+    width: 350,
+    color: "#000",
+    padding: 10,
+    marginBottom: 10,
+    
   },
 };

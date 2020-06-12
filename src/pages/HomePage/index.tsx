@@ -117,7 +117,7 @@ const styles = {
   header: {
     display: "flex",
     height: 50,
-    backgroundColor: "#dc6700",
+    backgroundColor: "#1c1c1c",
     justifyContent: "flex-end",
     alignContents: "center",
     padding: 5,
