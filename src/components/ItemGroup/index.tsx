@@ -17,7 +17,6 @@ export default class ItemGroup extends PureComponent<Props> {
     const returnedItems = [];
     if (items && items.length > 0) {
       for (let x = 0; x < items.length; x += 1) {
-          console.log('iteration x :', x);
         returnedItems.push(<ItemContainer key={`${x}-${items[x]}`}id={items[x]} onClick={this.handleClicks}/>);
       }
     }
@@ -27,7 +26,6 @@ export default class ItemGroup extends PureComponent<Props> {
   handleClicks(id: string) {
     const { onClick } = this.props;
     if (onClick) {
-      console.log("id clicked ", id);
       onClick(id);
     }
   }

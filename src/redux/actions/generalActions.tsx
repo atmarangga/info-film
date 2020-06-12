@@ -66,7 +66,7 @@ export function setError(title: string, message: string) {
   };
 }
 
-export function removeError(code: string) {
+export function removeError() {
   return {
     type: REMOVE_ERROR,
   };

@@ -10,8 +10,9 @@ import {
   GET_MOVIE_LIST,
   SET_DATA,
   GET_MOVIE_DETAILS,
+  SET_ERROR,
 } from "../actionTypes";
-import { LOGIN_REQUEST } from "../../helpers/request";
+import { LOGIN_REQUEST, MOVIE_DETAIL_REQUEST, MOVIE_LIST_REQUEST } from "../../helpers/request";
 import { LOGIN_URL, MOVIE_LIST_URL, MOVIE_DETAIL_URL } from "../../helpers/url";
 import {
   makeSelectUsername,
@@ -25,8 +26,6 @@ export function* prepareLogin() {
   try {
     const inputUsername = yield select(makeSelectUsername);
     const inputPassword = yield select(makeSelectPassword);
-    console.log("inputUsername : ", inputUsername);
-    console.log("inputPassword : ", inputPassword);
     const loginResponse = yield call(fetch, LOGIN_URL, {
       method: "POST",
       headers: {
@@ -39,15 +38,28 @@ export function* prepareLogin() {
     });
 
     const dataHere = yield loginResponse.json();
-    console.log("responseJson ? ", dataHere);
     if (dataHere.status === "ok") {
       //retrieve token
       const tokenData = dataHere.data && dataHere.data.token;
       yield put({ type: SET_TOKEN, token: tokenData });
+    } else if (dataHere.status === "error") {
+      
+      yield put({
+        type: SET_ERROR,
+        message: dataHere.message,
+        title: "Login Error",
+      });
     }
     yield put({ type: END_REQUEST, request: LOGIN_REQUEST });
   } catch (e) {
     console.log("Error : ", e);
+    yield put({
+      type: SET_ERROR,
+      message: "Failed to login. Please try again later",
+      title: "Login Error",
+    });
+    yield put({ type: END_REQUEST, request: LOGIN_REQUEST });
+    
   }
 }
 
@@ -60,12 +72,11 @@ function* prepareLogout() {
   }
 }
 
-function* prepareMovieDetails(action?:any) {
+function* prepareMovieDetails(action?: any) {
   try {
     const token = yield select(makeSelectToken);
-    let newURL = `${MOVIE_DETAIL_URL}?id=${action.id}`
-    
-    
+    let newURL = `${MOVIE_DETAIL_URL}?id=${action.id}`;
+    yield put({type: START_REQUEST, request: MOVIE_DETAIL_REQUEST})
     const movieDetailResponse = yield call(fetch, newURL, {
       method: "GET",
       headers: {
@@ -74,22 +85,30 @@ function* prepareMovieDetails(action?:any) {
         "Content-Type": "application/json",
         "Access-Control-Allow-Credentials": "true",
         "Access-Control-Allow-Origin": "*",
-      },  
-      
-    })
-    console.log('movieDetailResponse', movieDetailResponse);
+      },
+    });
     const dataResponse = yield movieDetailResponse.json();
-    if(dataResponse && dataResponse.status === "ok"){
-      yield put({type: SET_DATA, key: "details", value: dataResponse.data})
+    yield put({type: END_REQUEST, request: MOVIE_DETAIL_REQUEST})
+    if (dataResponse && dataResponse.status === "ok") {
+      yield put({ type: SET_DATA, key: "details", value: dataResponse.data });
+      
     }
+    else {
+      yield put({type: SET_ERROR, message: movieDetailResponse.statusText, title: movieDetailResponse.status})
+    }
+    
+
   } catch (e) {
     console.log("Exception on preparing movie details : ", e);
+    yield put({type: SET_ERROR, message: "Failed to connect", title: "Server failure"})
+    yield put({type: END_REQUEST, request: MOVIE_DETAIL_REQUEST})
   }
 }
 
 function* prepareMovieList() {
   try {
     const token = yield select(makeSelectToken);
+    yield put({type: START_REQUEST, request: MOVIE_LIST_REQUEST})
     const movieResponse = yield call(fetch, MOVIE_LIST_URL, {
       method: "GET",
       headers: {
@@ -106,8 +125,12 @@ function* prepareMovieList() {
         yield put({ type: SET_DATA, key: "movies", value: dataResponse.data });
       }
     }
+    yield put({type: END_REQUEST, request: MOVIE_LIST_REQUEST})
+
   } catch (e) {
     console.log("failed to prepareMovie list");
+    yield put({type: END_REQUEST, request: MOVIE_LIST_REQUEST})
+    
   }
 }
 
