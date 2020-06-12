@@ -24,8 +24,9 @@ As of this moment, I will not tackle this CORS issue any further. While this mig
 
 ## How To start this ?
 1. Make sure you have node.js (preferably the latest) installed on your machine.</br>
-2. Using terminal / command prompt install needed package using the `npm install` command while inside this root project</br>
-3. After that run `npm run start` or you could use `yarn start` instead. It will then (usually) open a browser and directs you to `localhost:3000` and will show you the homepage.
-4. It should run by now. Go to the browser and open : `localhost:3000` if your not directed automatically
+2. Clone / download this repository to your local machine.
+3. Using terminal / command prompt install needed package using the `npm install` command while inside this root project</br>
+4. After that run `npm run start` or you could use `yarn start` instead. It will then (usually) open a browser and directs you to `localhost:3000` and will show you the homepage.
+5. It should run by now. Go to the browser and open : `localhost:3000` if your not directed automatically
 
 2020/06/12
