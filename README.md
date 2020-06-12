@@ -1,44 +1,31 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Available Scripts
+## What is it ?
+### A simple movie information web app
+It uses:</br>
+- react : the framework javascript framework </br>
+- redux : for statement management </br>
+- saga : handling asynchronous request and side effects on each actions
+- reselect: access and manage state
+- immutable:  to minimize human errors on state management
+- semantic-ui-react : basic styling
 
-In the project directory, you can run:
+## Before Starting
 
-### `yarn start`
+This web app is accessing cross origin endpoints from :</br>
+ http://wdassignment.devfl.com/api/ </br>
+Hence you would not be able to do anything without enabling CORS ( Cross Origin Resource Sharing) from your browser.</br>
+You could use Moesif Orign & CORS Changer if your using using </br>
+Chrome : https://chrome.google.com/webstore/detail/moesif-orign-cors-changer/digfbfaphojjndkpccljibejjbppifbc </br>
+ Mozilla : https://addons.mozilla.org/en-US/firefox/addon/access-control-allow-origin/ </br>
+  
+or you could use other add-ons / methods to your liking. </br>
+As of this moment, I will not tackle this CORS issue any further. While this might be remedied by simply creating a proxy server to get resources from the endpoint, i believe it would be easier to just install the plugins instead. 
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## How To start this ?
+1. Make sure you have node.js (preferably the latest) installed on your machine.</br>
+2. Using terminal / command prompt install needed package using the `npm install` command while inside this root project</br>
+3. After that run `npm run start` or you could use `yarn start` instead. It will then (usually) open a browser and directs you to `localhost:3000` and will show you the homepage.
+4. It should run by now. Go to the browser and open : `localhost:3000` if your not directed automatically
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
-
-### `yarn test`
-
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `yarn build`
-
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `yarn eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+2020/06/12
