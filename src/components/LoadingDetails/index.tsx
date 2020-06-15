@@ -8,6 +8,9 @@ export default class LoadingItems extends PureComponent<Props> {
     return (
       <Container>
         <Item>
+          <div>
+            Fetching details...
+          </div>
           <Placeholder>
             <Placeholder.Header />
             <Placeholder.Paragraph >

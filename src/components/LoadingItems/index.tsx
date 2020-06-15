@@ -7,6 +7,9 @@ export default class LoadingItems extends PureComponent<Props> {
   render() {
     return (
       <Container>
+        <div>
+          Fetching movie lists...
+        </div>
         <Item>
           <Placeholder>
             <Placeholder.Header />
