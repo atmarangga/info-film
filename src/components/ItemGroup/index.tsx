@@ -14,11 +14,9 @@ export default class ItemGroup extends PureComponent<Props> {
 
   prepareItems() {
     const { items } = this.props;
-    console.log("items", items)
     const returnedItems = [];
     if (items && items.length > 0) {
       for (let x = 0; x < items.length; x += 1) {
-        console.log('items pushing', items[x]);
         returnedItems.push(<ItemContainer key={`${x}-${items[x].id}`}id={items[x].id} name={items[x].name}onClick={this.handleClicks}/>);
       }
     }

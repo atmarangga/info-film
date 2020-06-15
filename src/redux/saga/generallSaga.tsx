@@ -74,7 +74,7 @@ function* prepareLogout() {
 
 function* prepareMovieDetails(action?: any) {
   try {
-    console.log("actions ?", action)
+    
     const token = yield select(makeSelectToken);
     let newURL = `${MOVIE_DETAIL_URL}?id=${action.id}`;
     yield put({type: START_REQUEST, request: MOVIE_DETAIL_REQUEST})
