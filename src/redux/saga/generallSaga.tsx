@@ -109,7 +109,6 @@ function* prepareMovieDetails(action?: any) {
           break;
         }
       }
-      console.log('movies', movies);
       yield put({ type: SET_DATA, key: "movies", value: movies });
 
   } catch (e) {
@@ -144,7 +143,6 @@ function* prepareMovieList() {
         yield put({type: END_REQUEST, request: MOVIE_LIST_REQUEST})
         yield put({type: SET_DATA, key: "movies", value: idMov})
         for(let y = 0; y < dataResponse.data.length; y += 1){
-            console.log("dataResponse.data[y].id :", dataResponse.data[y])
             yield put({type: GET_MOVIE_DETAILS, id: dataResponse.data[y]})
         }
       }

@@ -20,7 +20,6 @@ class AppContainer extends PureComponent<Props, State> {
   }
   checkLoginSession(){
     const { token } = this.props;
-    console.log('token ?', token);
     if(token && token !== ''){
       this.setState({
         currentPage: <HomePage />

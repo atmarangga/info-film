@@ -102,7 +102,6 @@ class HomePage extends PureComponent<Props, State> {
               items={moviesArray}
               onClick={(data: any) => {
                 // this.setState()
-                console.log('data ?', data);
                 this.getMovieDetails(data);
               }}
             />

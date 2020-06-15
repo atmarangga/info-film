@@ -38,12 +38,10 @@ export default function genericReducer(state: any = defaultState, action: any) {
         currentRequest.splice(idx, 1);
         return state.set("requestProcess", fromJS(currentRequest));
       }
-      // console.log("not in end request");
       return state;
     }
 
     case CLEAR_DATA: {
-      // console.log("I am going to clear the data");
       return defaultState;
     }
     case CLEAR_SPECIFIC_DATA: {
