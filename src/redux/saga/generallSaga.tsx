@@ -132,7 +132,6 @@ function* prepareMovieList() {
         // iteration to get detail movies
         const moviesArray = [];
         for(let y = 0; y < dataResponse.data.length; y += 1){
-            console.log("dataResponse.data[]", dataResponse.data[y]);
             const movItem = yield call(prepareMovieDetails, {id: dataResponse.data[y]});
             moviesArray.push(movItem);
         }

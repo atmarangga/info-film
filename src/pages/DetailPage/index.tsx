@@ -55,17 +55,13 @@ class DetailPage extends PureComponent<Props> {
     };
     if (movies) {
       const dataJson = movies.toJS();
-      console.log('dataJson ', dataJson);
-      console.log('idSearch ', idSearch)
       for(let u = 0; u < dataJson.length; u += 1){
         if(dataJson[u].id === idSearch){
           results = dataJson[u];
-          console.log('returned here!!!', results )
+          
           return results;
         }
       }
-
-      console.log('results ??', results);
     }
     
     return {
@@ -77,8 +73,7 @@ class DetailPage extends PureComponent<Props> {
 
   render() {
     const { id, name, description } = this.prepareDetails();
-    const { isError, processPool } = this.props;
-    console.log(`id - name - description : ${id} - ${name} - ${description}`)
+    const { processPool } = this.props;
     return (
       <>
         <Button
