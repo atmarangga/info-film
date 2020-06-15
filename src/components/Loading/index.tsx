@@ -19,8 +19,3 @@ export default class LoadingCustom extends PureComponent<Props> {
   }
 }
 
-const styles = {
-  text: {
-    fontSize: 50,
-  },
-};

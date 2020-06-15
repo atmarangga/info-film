@@ -1,4 +1,4 @@
-import { fromJS, remove } from "immutable";
+import { fromJS } from "immutable";
 import {
   CLEAR_DATA,
   SET_DATA,

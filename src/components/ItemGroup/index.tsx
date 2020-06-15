@@ -27,7 +27,7 @@ export default class ItemGroup extends PureComponent<Props> {
             />
           );
         } else {
-          returnedItems.push(<LoadingDetails />);
+          returnedItems.push(<LoadingDetails key={`${x}-${items[x].id}`} />);
         }
       }
     }

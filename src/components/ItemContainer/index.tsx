@@ -20,7 +20,7 @@ export default class ItemContainer extends PureComponent<Props> {
   }
 
   render() {
-    const { id, name } = this.props;
+    const { name } = this.props;
     return (
       <Item style={styles.container}>
         <Item.Header style={styles.header} as="a" onClick={this.handleClick}>
