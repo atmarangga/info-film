@@ -32,6 +32,7 @@
   "eslintConfig": {
     "extends": "react-app"
   },
+  "proxy": "http://wdassignment.devfl.com",
   "browserslist": {
     "production": [
       ">0.2%",

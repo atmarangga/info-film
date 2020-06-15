@@ -29,13 +29,10 @@ export function* prepareLogin() {
     const inputPassword = yield select(makeSelectPassword);
     const loginResponse = yield call(fetch, LOGIN_URL, {
       method: "POST",
-      mode: 'cors',
       headers: {
-        Accept: "application/json",
         Authorization: "Basic " + btoa(inputUsername + ":" + inputPassword),
-        "Content-Type": "application/json",
-        // "Access-Control-Allow-Headers": "*",
-        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Credentials" : "true",
+        "Access-Control-Allow-Origin": "http://localhost:3000"
       },
     });
 
