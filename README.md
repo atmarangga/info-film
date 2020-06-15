@@ -12,15 +12,19 @@ It uses:</br>
 
 ## Before Starting
 
+Update : 15th June 2020</br>
+Turns out we could bypass this issue using proxy settings within the package.json. 
+No need to use plugins now :)
+
 This web app is accessing cross origin endpoints from :</br>
  http://wdassignment.devfl.com/api/ </br>
-Hence you would not be able to do anything without enabling CORS ( Cross Origin Resource Sharing) from your browser.</br>
-You could use Moesif Orign & CORS Changer if your using using </br>
-Chrome : https://chrome.google.com/webstore/detail/moesif-orign-cors-changer/digfbfaphojjndkpccljibejjbppifbc </br>
- Mozilla : https://addons.mozilla.org/en-US/firefox/addon/access-control-allow-origin/ </br>
+~~Hence you would not be able to do anything without enabling CORS ( Cross Origin Resource Sharing) from your browser.~~</br>
+~~You could use Moesif Orign & CORS Changer if your using using~~</br>
+~~Chrome : https://chrome.google.com/webstore/detail/moesif-orign-cors-changer/digfbfaphojjndkpccljibejjbppifbc~~</br>
+~~Mozilla : https://addons.mozilla.org/en-US/firefox/addon/access-control-allow-origin/~~</br>
   
-or you could use other add-ons / methods to your liking. </br>
-As of this moment, I will not tackle this CORS issue any further. While this might be remedied by simply creating a proxy server to get resources from the endpoint, i believe it would be easier to just install the plugins instead. 
+~~or you could use other add-ons / methods to your liking.~~</br>
+~~As of this moment, I will not tackle this CORS issue any further. While this might be remedied by simply creating a proxy server to get resources from the endpoint, i believe it would be easier to just install the plugins instead.~~
 
 ## How To start this ?
 1. Make sure you have node.js (preferably the latest) installed on your machine.</br>
