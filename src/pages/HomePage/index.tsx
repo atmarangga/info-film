@@ -59,8 +59,7 @@ class HomePage extends PureComponent<Props, State> {
         {
           showDetails: true,
           id: id
-        },
-        // () => getDetails(id)
+        }
       );
     }
   }

@@ -18,6 +18,7 @@ import {
   makeSelectUsername,
   makeSelectPassword,
   makeSelectToken,
+  makeSelectMovies,
 } from "../selector";
 
 export function* prepareLogin() {
@@ -31,6 +32,8 @@ export function* prepareLogin() {
       headers: {
         Accept: "application/json",
         Authorization: "Basic " + btoa(inputUsername + ":" + inputPassword),
+        "User-Agent": "PostmanRuntime/7.22.0",
+        "Host": "wdassignment.devfl.com",
         "Content-Type": "application/json",
         "Access-Control-Allow-Credentials": "true",
         "Access-Control-Allow-Origin": "*",
@@ -76,6 +79,7 @@ function* prepareMovieDetails(action?: any) {
   try {
     
     const token = yield select(makeSelectToken);
+    
     let newURL = `${MOVIE_DETAIL_URL}?id=${action.id}`;
     yield put({type: START_REQUEST, request: MOVIE_DETAIL_REQUEST})
     const movieDetailResponse = yield call(fetch, newURL, {
@@ -89,18 +93,26 @@ function* prepareMovieDetails(action?: any) {
       },
     });
     const dataResponse = yield movieDetailResponse.json();
+    let movies = yield select(makeSelectMovies);
+      movies = movies.toJS() || [];
+
     yield put({type: END_REQUEST, request: MOVIE_DETAIL_REQUEST})
     if (dataResponse && dataResponse.status === "ok") {
-      // yield put({ type: SET_DATA, key: "details", value: dataResponse.data });
       
-      return dataResponse.data;  
+      
+      for(let i = 0; i < movies.length; i += 1){
+        if(movies[i].id === action.id){
+          movies[i] = dataResponse.data;
+          break;
+        }
+      }
+      console.log('movies', movies);
+      yield put({ type: SET_DATA, key: "movies", value: movies });
+      
+      // return dataResponse.data;  
     }
     else {
-      return {
-        id: action.id,
-        name: `${movieDetailResponse.statusText} : ${movieDetailResponse.status}`        
-      }
-      // yield put({type: SET_ERROR, message: movieDetailResponse.statusText, title: movieDetailResponse.status})
+      yield put({type: SET_ERROR, message: movieDetailResponse.statusText, title: movieDetailResponse.status})
     }
     
 
@@ -126,21 +138,22 @@ function* prepareMovieList() {
       },
     });
     const dataResponse = yield movieResponse.json();
+    
     if (dataResponse && dataResponse.status === "ok") {
       if (dataResponse && dataResponse.data && dataResponse.data.length > 0) {
-
-        // iteration to get detail movies
-        const moviesArray = [];
-        for(let y = 0; y < dataResponse.data.length; y += 1){
-            const movItem = yield call(prepareMovieDetails, {id: dataResponse.data[y]});
-            moviesArray.push(movItem);
+        const idMov = [];
+        for(let c = 0; c < dataResponse.data.length; c += 1){
+          idMov.push({id: dataResponse.data[c]})
         }
-
-        // yield put({ type: SET_DATA, key: "movies", value: dataResponse.data });
-        yield put({ type: SET_DATA, key: "movies", value: moviesArray});
+        yield put({type: END_REQUEST, request: MOVIE_LIST_REQUEST})
+        yield put({type: SET_DATA, key: "movies", value: idMov})
+        for(let y = 0; y < dataResponse.data.length; y += 1){
+            console.log("dataResponse.data[y].id :", dataResponse.data[y])
+            yield put({type: GET_MOVIE_DETAILS, id: dataResponse.data[y]})
+        }
       }
     }
-    yield put({type: END_REQUEST, request: MOVIE_LIST_REQUEST})
+    
 
   } catch (e) {
     console.log("failed to prepareMovie list");
