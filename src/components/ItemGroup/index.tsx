@@ -3,7 +3,7 @@ import ItemContainer from "../ItemContainer";
 
 interface Props {
   onClick?: Function;
-  items?: Array<string> | Array<number>;
+  items?: Array<any> | Array<number>;
 }
 export default class ItemGroup extends PureComponent<Props> {
   constructor(props: any) {
@@ -17,7 +17,7 @@ export default class ItemGroup extends PureComponent<Props> {
     const returnedItems = [];
     if (items && items.length > 0) {
       for (let x = 0; x < items.length; x += 1) {
-        returnedItems.push(<ItemContainer key={`${x}-${items[x]}`}id={items[x]} onClick={this.handleClicks}/>);
+        returnedItems.push(<ItemContainer key={`${x}-${items[x].id}`}id={items[x].id} name={items[x].name}onClick={this.handleClicks}/>);
       }
     }
     return returnedItems;

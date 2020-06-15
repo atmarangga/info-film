@@ -74,6 +74,7 @@ function* prepareLogout() {
 
 function* prepareMovieDetails(action?: any) {
   try {
+    
     const token = yield select(makeSelectToken);
     let newURL = `${MOVIE_DETAIL_URL}?id=${action.id}`;
     yield put({type: START_REQUEST, request: MOVIE_DETAIL_REQUEST})
@@ -90,11 +91,16 @@ function* prepareMovieDetails(action?: any) {
     const dataResponse = yield movieDetailResponse.json();
     yield put({type: END_REQUEST, request: MOVIE_DETAIL_REQUEST})
     if (dataResponse && dataResponse.status === "ok") {
-      yield put({ type: SET_DATA, key: "details", value: dataResponse.data });
+      // yield put({ type: SET_DATA, key: "details", value: dataResponse.data });
       
+      return dataResponse.data;  
     }
     else {
-      yield put({type: SET_ERROR, message: movieDetailResponse.statusText, title: movieDetailResponse.status})
+      return {
+        id: action.id,
+        name: `${movieDetailResponse.statusText} : ${movieDetailResponse.status}`        
+      }
+      // yield put({type: SET_ERROR, message: movieDetailResponse.statusText, title: movieDetailResponse.status})
     }
     
 
@@ -122,7 +128,16 @@ function* prepareMovieList() {
     const dataResponse = yield movieResponse.json();
     if (dataResponse && dataResponse.status === "ok") {
       if (dataResponse && dataResponse.data && dataResponse.data.length > 0) {
-        yield put({ type: SET_DATA, key: "movies", value: dataResponse.data });
+
+        // iteration to get detail movies
+        const moviesArray = [];
+        for(let y = 0; y < dataResponse.data.length; y += 1){
+            const movItem = yield call(prepareMovieDetails, {id: dataResponse.data[y]});
+            moviesArray.push(movItem);
+        }
+
+        // yield put({ type: SET_DATA, key: "movies", value: dataResponse.data });
+        yield put({ type: SET_DATA, key: "movies", value: moviesArray});
       }
     }
     yield put({type: END_REQUEST, request: MOVIE_LIST_REQUEST})
@@ -133,6 +148,7 @@ function* prepareMovieList() {
     
   }
 }
+
 
 export default function* defaultSaga() {
   return [
