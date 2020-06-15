@@ -81,7 +81,7 @@ function* prepareMovieDetails(action?: any) {
     const token = yield select(makeSelectToken);
     
     let newURL = `${MOVIE_DETAIL_URL}?id=${action.id}`;
-    yield put({type: START_REQUEST, request: MOVIE_DETAIL_REQUEST})
+    // yield put({type: START_REQUEST, request: MOVIE_DETAIL_REQUEST})
     const movieDetailResponse = yield call(fetch, newURL, {
       method: "GET",
       headers: {
@@ -95,26 +95,22 @@ function* prepareMovieDetails(action?: any) {
     const dataResponse = yield movieDetailResponse.json();
     let movies = yield select(makeSelectMovies);
       movies = movies.toJS() || [];
-
-    yield put({type: END_REQUEST, request: MOVIE_DETAIL_REQUEST})
-    if (dataResponse && dataResponse.status === "ok") {
-      
-      
+    // yield put({type: END_REQUEST, request: MOVIE_DETAIL_REQUEST})
       for(let i = 0; i < movies.length; i += 1){
         if(movies[i].id === action.id){
-          movies[i] = dataResponse.data;
+          if (dataResponse && dataResponse.status === "ok") {
+            movies[i] = dataResponse.data;
+          } else {
+            movies[i] = {
+              id: action.id,
+              name: `${movieDetailResponse.status} : ${movieDetailResponse.statusText}`
+            }
+          }
           break;
         }
       }
       console.log('movies', movies);
       yield put({ type: SET_DATA, key: "movies", value: movies });
-      
-      // return dataResponse.data;  
-    }
-    else {
-      yield put({type: SET_ERROR, message: movieDetailResponse.statusText, title: movieDetailResponse.status})
-    }
-    
 
   } catch (e) {
     console.log("Exception on preparing movie details : ", e);

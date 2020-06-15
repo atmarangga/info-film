@@ -3,7 +3,6 @@ import { Header, Button, Container, Icon } from "semantic-ui-react";
 import { connect } from "react-redux";
 import { MOVIE_DETAIL_REQUEST } from "../../helpers/request";
 import {
-  makeSelectDetails,
   makeSelectError,
   makeSelectRequestProcess,
   makeSelectMovies,
@@ -20,7 +19,6 @@ import { checkRequest } from "../../helpers/utils";
 interface Props {
   returnFunction: Function;
   deleteDetails: Function;
-  movieDetails?: any;
   movies?: any;
   id?: string | number; 
   removeError?: Function;
@@ -103,7 +101,6 @@ class DetailPage extends PureComponent<Props> {
 function mapStateToProps(state?: any) {
   return {
     movies: makeSelectMovies(state),
-    movieDetails: makeSelectDetails(state),
     processPool: makeSelectRequestProcess(state),
     isError: makeSelectError(state),
   };
