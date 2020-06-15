@@ -29,12 +29,12 @@ export function* prepareLogin() {
     const inputPassword = yield select(makeSelectPassword);
     const loginResponse = yield call(fetch, LOGIN_URL, {
       method: "POST",
+      mode: 'cors',
       headers: {
         Accept: "application/json",
         Authorization: "Basic " + btoa(inputUsername + ":" + inputPassword),
-        "User-Agent": "PostmanRuntime/7.22.0",
-        "Host": "wdassignment.devfl.com",
         "Content-Type": "application/json",
+        "Access-Control-Allow-Headers": "*",
         "Access-Control-Allow-Credentials": "true",
         "Access-Control-Allow-Origin": "*",
       },
@@ -84,6 +84,7 @@ function* prepareMovieDetails(action?: any) {
     // yield put({type: START_REQUEST, request: MOVIE_DETAIL_REQUEST})
     const movieDetailResponse = yield call(fetch, newURL, {
       method: "GET",
+      mode: "cors",
       headers: {
         Accept: "application/json",
         Authorization: "Bearer " + token,
