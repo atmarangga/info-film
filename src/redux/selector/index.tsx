@@ -20,7 +20,6 @@ const makeSelectData = createSelector(selectData, (appData) => appData);
 const makeSelectToken = createSelector(selectLoginSession, (loginSessions) =>
   loginSessions.get("token")
 );
-const makeSelectDetails = createSelector(selectData, (data) => data.get("details"))
 const makeSelectMovies = createSelector(selectData, (data) =>
   data.get("movies")
 );
@@ -32,7 +31,6 @@ export {
   makeSelectUsername,
   makeSelectData,
   makeSelectMovies,
-  makeSelectDetails,
   makeSelectToken,
   makeSelectRequestProcess,
   makeSelectError

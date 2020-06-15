@@ -35,16 +35,10 @@ export default function genericReducer(state: any = defaultState, action: any) {
         currentRequest.indexOf(action.request) > -1
       ) {
         const idx = currentRequest.indexOf(action.request);
-
-        // const newArray = currentRequest.splice(idx,1);
-        // console.log('array new ?', currentRequest.splice(idx,1));
         currentRequest.splice(idx, 1);
         return state.set("requestProcess", fromJS(currentRequest));
-        // currentRequest = currentRequest.splice(currentRequest.indexOf(action.request), 1);
-        // return state.set("requestProcess", fromJS(currentRequest.splice(currentRequest.indexOf(action.request), 1)));
-        // return remove(state.get("requestProcess"),currentRequest.indexOf(action.request))
       }
-      console.log("not in end request");
+      // console.log("not in end request");
       return state;
     }
 

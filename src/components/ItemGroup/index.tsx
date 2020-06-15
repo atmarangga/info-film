@@ -1,6 +1,6 @@
 import React, { PureComponent } from "react";
 import ItemContainer from "../ItemContainer";
-
+import LoadingDetails from "../LoadingDetails";
 interface Props {
   onClick?: Function;
   items?: Array<any> | Array<number>;
@@ -17,7 +17,18 @@ export default class ItemGroup extends PureComponent<Props> {
     const returnedItems = [];
     if (items && items.length > 0) {
       for (let x = 0; x < items.length; x += 1) {
-        returnedItems.push(<ItemContainer key={`${x}-${items[x].id}`}id={items[x].id} name={items[x].name}onClick={this.handleClicks}/>);
+        if (items[x].name) {
+          returnedItems.push(
+            <ItemContainer
+              key={`${x}-${items[x].id}`}
+              id={items[x].id}
+              name={items[x].name}
+              onClick={this.handleClicks}
+            />
+          );
+        } else {
+          returnedItems.push(<LoadingDetails />);
+        }
       }
     }
     return returnedItems;
@@ -31,6 +42,6 @@ export default class ItemGroup extends PureComponent<Props> {
   }
 
   render() {
-    return<>{this.prepareItems()}</>;
+    return <>{this.prepareItems()}</>;
   }
 }

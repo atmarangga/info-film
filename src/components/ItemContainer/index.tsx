@@ -27,8 +27,7 @@ export default class ItemContainer extends PureComponent<Props> {
           {name}
         </Item.Header>
         <Item.Content style={styles.content}>
-          {/* <Item.Description style={styles.description}>This is a MOVIE.</Item.Description> */}
-          {/* <Item.Extra style={styles.extra}>You should just click the header for more details</Item.Extra> */}
+          <Item.Extra style={styles.extra}>You should just click the header for more details</Item.Extra>
         </Item.Content>
       </Item>
     );
