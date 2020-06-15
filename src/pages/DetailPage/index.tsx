@@ -78,6 +78,7 @@ class DetailPage extends PureComponent<Props> {
   render() {
     const { id, name, description } = this.prepareDetails();
     const { isError, processPool } = this.props;
+    console.log(`id - name - description : ${id} - ${name} - ${description}`)
     return (
       <>
         <Button
@@ -90,8 +91,7 @@ class DetailPage extends PureComponent<Props> {
           Back
         </Button>
         {checkRequest(processPool, MOVIE_DETAIL_REQUEST) && <LoaderComponent />}
-        {isError && <ErrorComponent />}
-        {name && id && description && (
+        {name && id && description ? (
           <Container textAlign="justified">
             <Header as="h2">
               {name || ''}
@@ -99,7 +99,7 @@ class DetailPage extends PureComponent<Props> {
             </Header>
             <Container textAlign="justified">{description || ''}</Container>
           </Container>
-        )}
+        ) : <ErrorComponent />}
       </>
     );
   }
