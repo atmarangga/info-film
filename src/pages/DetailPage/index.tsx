@@ -6,6 +6,7 @@ import {
   makeSelectDetails,
   makeSelectError,
   makeSelectRequestProcess,
+  makeSelectMovies,
 } from "../../redux/selector";
 import {
   clearDataSpecific,
@@ -15,10 +16,13 @@ import ErrorComponent from "../../components/Oops";
 import LoaderComponent from "../../components/Loading";
 import { checkRequest } from "../../helpers/utils";
 
+
 interface Props {
   returnFunction: Function;
   deleteDetails: Function;
   movieDetails?: any;
+  movies?: any;
+  id?: string | number; 
   removeError?: Function;
   isError?: any;
   processPool?: Array<string> | any;
@@ -41,27 +45,38 @@ class DetailPage extends PureComponent<Props> {
   }
 
   prepareDetails() {
-    const { movieDetails } = this.props;
-    if (movieDetails) {
-      const dataJson = movieDetails.toJS();
-      const id = `Movie ID - ${dataJson && dataJson.id}`;
-      const title = dataJson && dataJson.name;
-      const description = dataJson && dataJson.description;
-      return {
-        id,
-        title,
-        description,
-      };
+    const { movies, id } = this.props;
+    const idSearch = id;
+   
+    let results = {
+      id: idSearch,
+      name: '',
+      description: ''
+    };
+    if (movies) {
+      const dataJson = movies.toJS();
+      console.log('dataJson ', dataJson);
+      console.log('idSearch ', idSearch)
+      for(let u = 0; u < dataJson.length; u += 1){
+        if(dataJson[u].id === idSearch){
+          results = dataJson[u];
+          console.log('returned here!!!', results )
+          return results;
+        }
+      }
+
+      console.log('results ??', results);
     }
+    
     return {
-      // id: "-",
-      // title: "-",
-      // description: "-",
+      id,
+      name: '',
+      description: '',
     };
   }
 
   render() {
-    const { id, title, description } = this.prepareDetails();
+    const { id, name, description } = this.prepareDetails();
     const { isError, processPool } = this.props;
     return (
       <>
@@ -76,13 +91,13 @@ class DetailPage extends PureComponent<Props> {
         </Button>
         {checkRequest(processPool, MOVIE_DETAIL_REQUEST) && <LoaderComponent />}
         {isError && <ErrorComponent />}
-        {title && id && description && (
+        {name && id && description && (
           <Container textAlign="justified">
             <Header as="h2">
-              {title}
-              <Header.Subheader>{id}</Header.Subheader>
+              {name || ''}
+              <Header.Subheader>Movie id - {id}</Header.Subheader>
             </Header>
-            <Container textAlign="justified">{description}</Container>
+            <Container textAlign="justified">{description || ''}</Container>
           </Container>
         )}
       </>
@@ -92,6 +107,7 @@ class DetailPage extends PureComponent<Props> {
 
 function mapStateToProps(state?: any) {
   return {
+    movies: makeSelectMovies(state),
     movieDetails: makeSelectDetails(state),
     processPool: makeSelectRequestProcess(state),
     isError: makeSelectError(state),

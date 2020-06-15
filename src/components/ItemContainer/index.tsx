@@ -4,6 +4,7 @@ import { Item } from "semantic-ui-react";
 interface Props {
   id?: string | number;
   onClick?: Function;
+  name?: string;
 }
 export default class ItemContainer extends PureComponent<Props> {
   constructor(props?: any) {
@@ -19,15 +20,15 @@ export default class ItemContainer extends PureComponent<Props> {
   }
 
   render() {
-    const { id } = this.props;
+    const { id, name } = this.props;
     return (
       <Item style={styles.container}>
         <Item.Header style={styles.header} as="a" onClick={this.handleClick}>
-          Movie - {id}
+          {name}
         </Item.Header>
         <Item.Content style={styles.content}>
-          <Item.Description style={styles.description}>This is a MOVIE.</Item.Description>
-          <Item.Extra style={styles.extra}>You should just click the header for more details</Item.Extra>
+          {/* <Item.Description style={styles.description}>This is a MOVIE.</Item.Description> */}
+          {/* <Item.Extra style={styles.extra}>You should just click the header for more details</Item.Extra> */}
         </Item.Content>
       </Item>
     );

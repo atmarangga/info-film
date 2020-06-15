@@ -25,6 +25,7 @@ interface Props {
 
 interface State {
   showDetails: boolean;
+  id?: string | number; 
 }
 
 class HomePage extends PureComponent<Props, State> {
@@ -32,6 +33,7 @@ class HomePage extends PureComponent<Props, State> {
     super(props);
     this.state = {
       showDetails: false,
+      id: '',
     };
     this.handleLogout = this.handleLogout.bind(this);
     this.getMovieDetails = this.getMovieDetails.bind(this);
@@ -56,8 +58,9 @@ class HomePage extends PureComponent<Props, State> {
       this.setState(
         {
           showDetails: true,
+          id: id
         },
-        () => getDetails(id)
+        // () => getDetails(id)
       );
     }
   }
@@ -99,11 +102,13 @@ class HomePage extends PureComponent<Props, State> {
             <ItemGroup
               items={moviesArray}
               onClick={(data: any) => {
+                // this.setState()
+                console.log('data ?', data);
                 this.getMovieDetails(data);
               }}
             />
           )}
-          {showDetails && <DetailPage returnFunction={this.goBackToHomepage} />}
+          {showDetails && <DetailPage id = {this.state.id} returnFunction={this.goBackToHomepage} />}
         </div>
       </>
     );
