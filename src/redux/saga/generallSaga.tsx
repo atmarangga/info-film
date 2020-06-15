@@ -34,8 +34,7 @@ export function* prepareLogin() {
         Accept: "application/json",
         Authorization: "Basic " + btoa(inputUsername + ":" + inputPassword),
         "Content-Type": "application/json",
-        "Access-Control-Allow-Headers": "*",
-        "Access-Control-Allow-Credentials": "true",
+        // "Access-Control-Allow-Headers": "*",
         "Access-Control-Allow-Origin": "*",
       },
     });
